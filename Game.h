@@ -18,7 +18,6 @@ enum class GameState {
 class Game {
 private:
     Buttons *buttons;
-    Speaker *speaker;
     GameState state;
     uint8_t rounds[GAME_ROUNDS_MAXIMUM];
     int16_t maximumRoundNumber;
@@ -26,7 +25,7 @@ private:
     uint32_t transitionAt;
 
 public:
-    Game(Speaker *speaker, Buttons *buttons);
+    Game(Buttons *buttons);
 
 public:
     void welcome();

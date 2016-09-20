@@ -12,7 +12,7 @@
 Speaker speaker;
 Adafruit_NeoPixel pixels(1, PIN_BUTTON_LEDS, NEO_GRB + NEO_KHZ800);
 Buttons buttons(&speaker, &pixels);
-Game game(&speaker, &buttons);
+Game game(&buttons);
 
 void setup() {
     pinMode(13, OUTPUT);

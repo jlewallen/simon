@@ -42,6 +42,15 @@ void Buttons::play(uint8_t number) {
     speaker->play(button->note);
 }
 
+void Buttons::fail() {
+    for (uint8_t i = 0; i < NUMBER_OF_BUTTONS; ++i) {
+        Button *button = &buttons[i];
+        pixels->setPixelColor(button->ledIndex, COLOR_RGB(128, 128, 128));
+        pixels->show();
+    }
+    speaker->fail();
+}
+
 Buttons::Buttons(Speaker *speaker, Adafruit_NeoPixel *pixels) :
     speaker(speaker), pixels(pixels),
     buttons({

@@ -1,7 +1,7 @@
 #include "Game.h"
 
-Game::Game(Speaker *speaker, Buttons *buttons) :
-    speaker(speaker), buttons(buttons), state(GameState::WELCOME), maximumRoundNumber(0), roundNumber(0) {
+Game::Game(Buttons *buttons) :
+    buttons(buttons), state(GameState::WELCOME), maximumRoundNumber(0), roundNumber(0) {
 }
 
 
@@ -57,7 +57,7 @@ void Game::tick() {
                 }
             }
             else {
-                speaker->fail();
+                buttons->fail();
                 state = GameState::FAIL;
                 transitionAt = millis();
             }

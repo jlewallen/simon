@@ -52,6 +52,7 @@ public:
     void tick();
     void irq();
     void play(uint8_t number);
+    void fail();
     int8_t dequeuePress() {
         for (uint8_t i = 0; i < NUMBER_OF_BUTTONS; ++i) {
             if (buttons[i].wasPressed()) {
@@ -60,7 +61,6 @@ public:
         }
         return -1;
     }
-
 };
 
 #endif
