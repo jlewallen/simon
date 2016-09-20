@@ -1,11 +1,18 @@
 #include "Game.h"
 
 Game::Game(Speaker *speaker, Buttons *buttons) :
-    speaker(speaker), buttons(buttons) {
+    speaker(speaker), buttons(buttons), state(GameState::WELCOME), maximumRoundNumber(0), roundNumber(0) {
+}
+
+
+void Game::welcome() {
+    maximumRoundNumber = 4;
+    roundNumber = 0;
+    state = GameState::WELCOME;
 }
 
 void Game::startOver() {
-    randomSeed(8483); // TOOD: Change this :)
+    randomSeed(8483); // TOOD: Remove this :)
     maximumRoundNumber = 0;
     for (int16_t i = 0; i < GAME_ROUNDS_MAXIMUM; ++i) {
         rounds[i] = 0;
@@ -22,6 +29,20 @@ void Game::increase() {
 
 void Game::tick() {
     switch (state) {
+    case GameState::WELCOME: {
+        if (millis() - transitionAt > 500) {
+            if (roundNumber < maximumRoundNumber) {
+                buttons->play(roundNumber);
+                roundNumber++;
+            }
+            else {
+                startOver();
+            }
+            transitionAt = millis();
+        }
+
+        break;
+    }
     case GameState::WAITING: {
         buttons->tick();
 

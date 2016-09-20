@@ -15,12 +15,21 @@ Buttons buttons(&speaker, &pixels);
 Game game(&speaker, &buttons);
 
 void setup() {
+    pinMode(13, OUTPUT);
+    digitalWrite(13, LOW);
+
     Serial.begin(115200);
 
     speaker.setup();
     pixels.begin();
     buttons.setup();
-    game.startOver();
+
+    if (false) {
+        game.startOver();
+    }
+    else {
+        game.welcome();
+    }
 
     while (true) {
         speaker.tick();

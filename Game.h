@@ -8,6 +8,7 @@
 #define GAME_ROUNDS_MAXIMUM                                   256
 
 enum class GameState {
+    WELCOME,
     WAITING,
     PLAYBACK,
     SUCCESS,
@@ -28,6 +29,7 @@ public:
     Game(Speaker *speaker, Buttons *buttons);
 
 public:
+    void welcome();
     void startOver();
     void increase();
     void tick();
