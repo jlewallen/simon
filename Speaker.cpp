@@ -14,6 +14,12 @@ void Speaker::setup() {
 #endif
 }
 
+void Speaker::fail() {
+    digitalWrite(PIN_SPEAKER_ENABLE, HIGH);
+    tone(PIN_SPEAKER_SOUND, NOTE_C2);
+    offTime = millis() + 1000;
+}
+
 void Speaker::play(uint32_t note) {
     digitalWrite(PIN_SPEAKER_ENABLE, HIGH);
     tone(PIN_SPEAKER_SOUND, note, 500);

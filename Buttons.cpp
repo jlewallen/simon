@@ -35,6 +35,13 @@ void Button::irq() {
     }
 }
 
+void Buttons::play(uint8_t number) {
+    Button *button = &buttons[number];
+    pixels->setPixelColor(button->ledIndex, button->color);
+    pixels->show();
+    speaker->play(button->note);
+}
+
 Buttons::Buttons(Speaker *speaker, Adafruit_NeoPixel *pixels) :
     speaker(speaker), pixels(pixels),
     buttons({
@@ -46,6 +53,14 @@ Buttons::Buttons(Speaker *speaker, Adafruit_NeoPixel *pixels) :
     singleton = this;
 }
 
+void Buttons::off() {
+    for (uint8_t i = 0; i < NUMBER_OF_BUTTONS; ++i) {
+        Button *button = &buttons[i];
+        pixels->setPixelColor(button->ledIndex, COLOR_RGB(0, 0, 0));
+        pixels->show();
+    }
+}
+
 void Buttons::setup() {
     for (uint8_t i = 0; i < NUMBER_OF_BUTTONS; ++i) {
         buttons[i].setup();
@@ -54,15 +69,7 @@ void Buttons::setup() {
 
 void Buttons::tick() {
     for (uint8_t i = 0; i < NUMBER_OF_BUTTONS; ++i) {
-        Button *button = &buttons[i];
-
-        button->tick();
-
-        if (button->wasPressed()) {
-            pixels->setPixelColor(button->ledIndex, button->color);
-            pixels->show();
-            speaker->play(button->note);
-        }
+        buttons[i].tick();
     }
 }
 

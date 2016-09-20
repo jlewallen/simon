@@ -47,10 +47,12 @@ public:
     Buttons(Speaker *speaker, Adafruit_NeoPixel *pixels);
 
 public:
+    void off();
     void setup();
     void tick();
     void irq();
-    int8_t anyPressed() {
+    void play(uint8_t number);
+    int8_t dequeuePress() {
         for (uint8_t i = 0; i < NUMBER_OF_BUTTONS; ++i) {
             if (buttons[i].wasPressed()) {
                 return i;
