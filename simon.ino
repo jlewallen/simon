@@ -10,9 +10,10 @@
 #define PIN_BUTTON_LEDS                       A5
 
 Speaker speaker;
-Adafruit_NeoPixel pixels(1, PIN_BUTTON_LEDS, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel pixels(4, PIN_BUTTON_LEDS, NEO_GRB + NEO_KHZ800);
 Buttons buttons(&speaker, &pixels);
-Game game(&buttons);
+DemoMode demoMode(&pixels);
+Game game(&buttons, &demoMode);
 
 void setup() {
     pinMode(13, OUTPUT);
@@ -23,18 +24,11 @@ void setup() {
     speaker.setup();
     pixels.begin();
     buttons.setup();
-
-    if (false) {
-        game.startOver();
-    }
-    else {
-        game.welcome();
-    }
+    game.welcome();
 
     while (true) {
         speaker.tick();
         game.tick();
-        delay(10);
     }
 }
 

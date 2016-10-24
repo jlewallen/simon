@@ -1,9 +1,8 @@
 #include "Game.h"
 
-Game::Game(Buttons *buttons) :
-    buttons(buttons), state(GameState::WELCOME), maximumRoundNumber(0), roundNumber(0) {
+Game::Game(Buttons *buttons, DemoMode *demoMode) :
+    buttons(buttons), demoMode(demoMode), state(GameState::WELCOME), maximumRoundNumber(0), roundNumber(0) {
 }
-
 
 void Game::welcome() {
     maximumRoundNumber = 4;
@@ -14,6 +13,7 @@ void Game::welcome() {
 void Game::startOver() {
     randomSeed(8483); // TOOD: Remove this :)
     maximumRoundNumber = 0;
+    lastButtonPressedAt = millis();
     for (int16_t i = 0; i < GAME_ROUNDS_MAXIMUM; ++i) {
         rounds[i] = 0;
     }
@@ -43,11 +43,24 @@ void Game::tick() {
 
         break;
     }
+    case GameState::INACTIVE: {
+        buttons->tick();
+
+        int8_t pressed = buttons->dequeuePress();
+        if (pressed >= 0) {
+            startOver();
+        }
+        else {
+            demoMode->tick();
+        }
+        break;
+    }
     case GameState::WAITING: {
         buttons->tick();
 
         int8_t pressed = buttons->dequeuePress();
         if (pressed >= 0) {
+            lastButtonPressedAt = millis();
             if (pressed == rounds[roundNumber]) {
                 buttons->play(pressed);
                 roundNumber++;
@@ -62,6 +75,12 @@ void Game::tick() {
                 transitionAt = millis();
             }
         }
+
+        if (lastButtonPressedAt > 0 && millis() - lastButtonPressedAt > 1000 * 30) {
+            lastButtonPressedAt = 0;
+            state = GameState::INACTIVE;
+            transitionAt = millis();
+        }
         break;
     }
     case GameState::PLAYBACK: {
@@ -72,6 +91,7 @@ void Game::tick() {
             }
             else {
                 roundNumber = 0;
+                buttons->off();
                 state = GameState::WAITING;
             }
             transitionAt = millis();
