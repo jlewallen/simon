@@ -1,7 +1,7 @@
 #include "DemoMode.h"
 
-DemoMode::DemoMode(Adafruit_NeoPixel *strip) :
-    strip(strip), state(DemoState::FLASH), transitionAt(0), delayUntil(0) {
+DemoMode::DemoMode(Adafruit_NeoPixel *strip, Buttons *buttons) :
+    strip(strip), buttons(buttons), state(DemoState::FLASH), transitionAt(0), delayUntil(0), startedAt(0) {
     colorsByIndex[0] = strip->Color(255, 0, 0);
     colorsByIndex[1] = strip->Color(0, 0, 255);
     colorsByIndex[2] = strip->Color(255, 255, 0);
@@ -59,6 +59,12 @@ void DemoMode::flash() {
 
 }
 
+void DemoMode::generateRandomTune() {
+    for (uint8_t i = 0; i < RANDOM_TUNE_LENGTH; ++i) {
+        tune[i] = random(0, 4);
+    }
+}
+
 void DemoMode::tick() {
     if (delayUntil > 0) {
         if (millis() >= delayUntil) {
@@ -66,6 +72,15 @@ void DemoMode::tick() {
         }
         return;
     }
+
+    if (millis() - startedAt > 1000 * 60 * 5) {
+        generateRandomTune();
+        transitionAt = millis();
+        state = DemoState::RANDOM_TUNE;
+        position = 0;
+        startedAt = millis();
+    }
+
     switch (state) {
     case DemoState::FLASH: {
         if (millis() - transitionAt > 5 * 1000) {
@@ -92,6 +107,19 @@ void DemoMode::tick() {
             position = 0;
         }
         theaterChase(strip->Color(255, 255, 255));
+        break;
+    }
+    case DemoState::RANDOM_TUNE: {
+        if (position == RANDOM_TUNE_LENGTH) {
+            transitionAt = millis();
+            state = DemoState::FLASH;
+            position = 0;
+        }
+        else {
+            buttons->play(tune[position]);
+            delayAndCheck(500);
+            position++;
+        }
         break;
     }
     }

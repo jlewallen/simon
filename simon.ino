@@ -12,7 +12,7 @@
 Speaker speaker;
 Adafruit_NeoPixel pixels(4, PIN_BUTTON_LEDS, NEO_GRB + NEO_KHZ800);
 Buttons buttons(&speaker, &pixels);
-DemoMode demoMode(&pixels);
+DemoMode demoMode(&pixels, &buttons);
 Game game(&buttons, &demoMode);
 
 void setup() {

@@ -79,6 +79,7 @@ void Game::tick() {
         if (lastButtonPressedAt > 0 && millis() - lastButtonPressedAt > 1000 * 30) {
             lastButtonPressedAt = 0;
             state = GameState::INACTIVE;
+            demoMode->start();
             transitionAt = millis();
         }
         break;
