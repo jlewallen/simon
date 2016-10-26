@@ -1,5 +1,6 @@
 #include "Buttons.h"
 #include "pitches.h"
+#include "vibrations.h"
 
 #define COLOR_RGB(r, g, b)                                    (((uint32_t)r << 16) | ((uint32_t)g <<  8) | b)
 #define BUTTON_HYSTERESIS                                     50

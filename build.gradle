@@ -14,9 +14,8 @@ import com.github.jlewallen.arduino.*
 model {
     components {
         simon(ArduinoComponentSpec) {
-            // boards = [ "adafruit:avr:feather32u4" ]
             boards = [ "adafruit:samd:adafruit_feather_m0" ]
-            libraries = [ "Adafruit_NeoPixel" ]
+            libraries = [ "Adafruit_NeoPixel", "VibrationSensors" ]
         }
     }
 }

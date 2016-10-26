@@ -15,7 +15,7 @@ model {
     components {
         simon(ArduinoComponentSpec) {
             boards = [ "adafruit:samd:adafruit_feather_m0" ]
-            libraries = [ ]
+            libraries = [ "VibrationSensors" ]
         }
     }
 }
