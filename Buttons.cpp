@@ -1,4 +1,4 @@
-#include "buttons.h"
+#include "Buttons.h"
 #include "pitches.h"
 
 #define COLOR_RGB(r, g, b)                                    (((uint32_t)r << 16) | ((uint32_t)g <<  8) | b)
