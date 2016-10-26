@@ -16,9 +16,7 @@ class Button {
 
 private:
     uint8_t sense;
-    uint8_t rawPressed;
     uint32_t note;
-    uint32_t downAt;
     uint8_t ledIndex;
     uint32_t color;
     bool pressed;

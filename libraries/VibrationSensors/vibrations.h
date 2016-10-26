@@ -14,6 +14,6 @@ extern vibration_sensor_t vibrationSensors[];
 
 void vibration_sensors_setup(vibration_sensor_t *sensors);
 
-int8_t vibration_sensors_detect_press(vibration_sensor_t *sensors);
+vibration_sensor_t *vibration_sensors_detect_press(vibration_sensor_t *sensors);
 
 #endif

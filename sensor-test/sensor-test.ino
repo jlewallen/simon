@@ -17,11 +17,11 @@ uint32_t timer = 0;
 
 void loop() {
     while (true) {
-        int8_t pressed = vibration_sensors_detect_press(vibrationSensors);
-        if (pressed != -1) {
+        vibration_sensor_t *pressed = vibration_sensors_detect_press(vibrationSensors);
+        if (pressed != nullptr) {
             Serial.print(millis());
             Serial.print(" ");
-            Serial.print(pressed);
+            Serial.print(pressed->which);
             Serial.println();
         }
 

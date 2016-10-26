@@ -2,21 +2,21 @@
 #include "vibrations.h"
 
 #define VIBRATION_SENSORS_NUMBER                              4
-#define VIBRATION_SENSORS_HYSTERESIS                          (250 * 1000)
+#define VIBRATION_SENSORS_HYSTERESIS                          250
 
 void vibration_sensors_irq(vibration_sensor_t *sensor) {
     if (sensor->first == 0) {
-        sensor->first = micros();
+        sensor->first = millis();
     }
     sensor->vibrations++;
-    sensor->last = micros();
+    sensor->last = millis();
 }
 
 bool vibration_sensors_any_detected(vibration_sensor_t *sensors) {
     for (uint8_t i = 0; i < VIBRATION_SENSORS_NUMBER; ++i) {
         vibration_sensor_t *sensor = &sensors[i];
 
-        if (sensor->first > 0 && micros() - sensor->last > VIBRATION_SENSORS_HYSTERESIS) {
+        if (sensor->first > 0 && millis() - sensor->last > VIBRATION_SENSORS_HYSTERESIS) {
             return true;
         }
     }
@@ -85,13 +85,12 @@ void vibration_sensors_setup(vibration_sensor_t *sensors) {
     }
 }
 
-int8_t vibration_sensors_detect_press(vibration_sensor_t *sensors) {
+vibration_sensor_t *vibration_sensors_detect_press(vibration_sensor_t *sensors) {
     vibration_sensor_t *pressed = nullptr;
     uint32_t maximumVibrations = 0;
-    int8_t pressedIndex = -1;
 
     if (!vibration_sensors_any_detected(sensors)) {
-        return -1;
+        return nullptr;
     }
 
     vibration_sensors_dump(sensors);
@@ -103,19 +102,18 @@ int8_t vibration_sensors_detect_press(vibration_sensor_t *sensors) {
             if (sensor->vibrations > maximumVibrations) {
                 maximumVibrations = sensor->vibrations;
                 pressed = sensor;
-                pressedIndex = i;
             }
         }
     }
 
     if (vibration_sensors_bad_vibration(sensors, pressed)) {
         vibration_sensors_clear(sensors);
-        return -1;
+        return nullptr;
     }
 
     vibration_sensors_clear(sensors);
 
-    return pressedIndex;
+    return pressed;
 }
 
 static void irq_button0(void);
