@@ -11,7 +11,6 @@ void Game::welcome() {
 }
 
 void Game::startOver() {
-    randomSeed(8483); // TOOD: Remove this :)
     maximumRoundNumber = 0;
     lastButtonPressedAt = millis();
     for (int16_t i = 0; i < GAME_ROUNDS_MAXIMUM; ++i) {

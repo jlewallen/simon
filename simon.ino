@@ -7,7 +7,7 @@
 #include "Buttons.h"
 #include "Game.h"
 
-#define PIN_BUTTON_LEDS                       A5
+#define PIN_BUTTON_LEDS                                       12
 
 Speaker speaker;
 Adafruit_NeoPixel pixels(4, PIN_BUTTON_LEDS, NEO_GRB + NEO_KHZ800);
@@ -20,6 +20,13 @@ void setup() {
     digitalWrite(13, LOW);
 
     Serial.begin(115200);
+
+    #ifdef DEBUGGING
+    randomSeed(8483);
+    #else
+    // Not quality randomness but this isn't crypto.
+    randomSeed(analogRead(A5));
+    #endif
 
     speaker.setup();
     pixels.begin();
