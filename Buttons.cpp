@@ -55,8 +55,8 @@ void Buttons::off() {
     for (uint8_t i = 0; i < NUMBER_OF_BUTTONS; ++i) {
         Button *button = &buttons[i];
         pixels->setPixelColor(button->ledIndex, COLOR_RGB(0, 0, 0));
-        pixels->show();
     }
+    pixels->show();
 }
 
 void Buttons::setup() {

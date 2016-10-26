@@ -58,6 +58,10 @@ void Game::tick() {
     case GameState::WAITING: {
         buttons->tick();
 
+        if (millis() - lastButtonPressedAt > 500) {
+            buttons->off();
+        }
+
         int8_t pressed = buttons->dequeuePress();
         if (pressed >= 0) {
             lastButtonPressedAt = millis();
