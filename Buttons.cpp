@@ -8,18 +8,6 @@ Button::Button(uint8_t sense, uint32_t note, uint8_t ledIndex, uint32_t color) :
     sense(sense), note(note), ledIndex(ledIndex), color(color), pressed(false) {
 }
 
-void Button::setup() {
-
-}
-
-void Button::tick() {
-
-}
-
-void Button::irq() {
-
-}
-
 void Buttons::play(uint8_t number) {
     for (uint8_t i = 0; i < NUMBER_OF_BUTTONS; ++i) {
         Button *button = &buttons[i];
@@ -30,6 +18,7 @@ void Buttons::play(uint8_t number) {
     pixels->setPixelColor(button->ledIndex, button->color);
     pixels->show();
     speaker->play(button->note);
+    areAnyOn = true;
 }
 
 void Buttons::fail() {
@@ -57,6 +46,7 @@ void Buttons::off() {
         pixels->setPixelColor(button->ledIndex, COLOR_RGB(0, 0, 0));
     }
     pixels->show();
+    areAnyOn = false;
 }
 
 void Buttons::setup() {

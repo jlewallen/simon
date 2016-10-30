@@ -88,17 +88,22 @@ void Game::tick() {
         break;
     }
     case GameState::PLAYBACK: {
-        if (millis() - transitionAt > 500) {
-            if (roundNumber < maximumRoundNumber) {
-                buttons->play(rounds[roundNumber]);
-                roundNumber++;
-            }
-            else {
-                roundNumber = 0;
+        if (millis() - transitionAt > 400) {
+            if (buttons->anyOn()) {
                 buttons->off();
-                state = GameState::WAITING;
             }
-            transitionAt = millis();
+            if (millis() - transitionAt > 500) {
+                if (roundNumber < maximumRoundNumber) {
+                    buttons->play(rounds[roundNumber]);
+                    roundNumber++;
+                }
+                else {
+                    roundNumber = 0;
+                    buttons->off();
+                    state = GameState::WAITING;
+                }
+                transitionAt = millis();
+            }
         }
         break;
     }

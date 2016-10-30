@@ -25,9 +25,6 @@ public:
     Button(uint8_t sense, uint32_t note, uint8_t ledIndex, uint32_t color);
 
 public:
-    void setup();
-    void tick();
-    void irq();
     boolean wasPressed() {
         bool yes = pressed;
         pressed = false;
@@ -40,11 +37,15 @@ private:
     Speaker *speaker;
     Adafruit_NeoPixel *pixels;
     Button buttons[NUMBER_OF_BUTTONS];
+    bool areAnyOn;
 
 public:
     Buttons(Speaker *speaker, Adafruit_NeoPixel *pixels);
 
 public:
+    bool anyOn() {
+        return areAnyOn;
+    }
     void off();
     void setup();
     void tick();
