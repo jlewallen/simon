@@ -8,7 +8,7 @@ void Speaker::setup() {
     digitalWrite(PIN_SPEAKER_ENABLE, LOW);
 
     pinMode(PIN_SPEAKER_SOUND, OUTPUT);
-#ifndef ARDUINO_SAMD_FEATHER_M0
+#ifndef ARDUINO_SAMD_ZERO
     // On the ATSAMD this will hang if, gotta call tone first.
     noTone(PIN_SPEAKER_SOUND);
 #endif
